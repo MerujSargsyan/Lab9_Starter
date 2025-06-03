@@ -87,7 +87,21 @@
     </section>
   </main>
 
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
   <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "9669c264424e4234bf5c39aef2fa93d0"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>
+  <script>
+    class EvaluationError extends Error {
+      constructor(message) {
+        super(message);
+        this.name = this.constructor.name;
+      }
+    }
+
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
       e.preventDefault();
@@ -104,6 +118,9 @@
       try {
         output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
       } catch (error) {
+        if (error instanceof SyntaxError) {
+          throw new EvaluationError("Must have two parameters");
+        }
         console.error('Eval failed:', error);
       } finally {
         console.log('Calculation attempted with:', {
@@ -175,10 +192,15 @@
             }
             traceExample();
             break;
+          case 'Trigger a Global Error':
+            boom('I love CSE 110 Labs');
         }
       });
     });
 
+    window.onerror = function(message, source, lineno, colno, error) {
+      console.log('Errors are so fun');
+    }
   </script>
 </body>
 
