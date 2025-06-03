@@ -94,14 +94,91 @@
       let output = document.querySelector('output');
       let firstNum = document.querySelector('#first-num').value;
       let secondNum = document.querySelector('#second-num').value;
+
+      if(isNaN(firstNum)) {
+        throw new Error('Invalid input: Please enter valid numbers.');
+      }
+
       let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      
+      try {
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      } catch (error) {
+        console.error('Eval failed:', error);
+      } finally {
+        console.log('Calculation attempted with:', {
+          firstNum,
+          secondNum,
+          operator
+        });
+      }
     });
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
     // Start your code here
     // You may move this JS to another file if you wish
+    errorBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const text = btn.textContent;
+
+        switch (text) {
+          case 'Console Log':
+            console.log('This is a console.log message');
+            break;
+          case 'Console Error':
+            console.error('This is a console.error message');
+            break;
+          case 'Console Count':
+            console.count('Console Count');
+            break;
+          case 'Console Warn':
+            console.warn('This is a console.warn message');
+            break;
+          case 'Console Assert':
+            console.assert(false, 'Assertion failed: This is a console.assert message');
+            break;
+          case 'Console Clear':
+            console.clear();
+            break;
+          case 'Console Dir':
+            console.dir(btn);
+            break;
+          case 'Console dirxml':
+            console.dirxml(btn);
+            break;
+          case 'Console Group Start':
+            console.group('Console Group');
+            console.log('Inside the group');
+            break;
+          case 'Console Group End':
+            console.log('Exiting Group');
+            console.groupEnd('Console Group');
+            break;
+          case 'Console Table':
+            console.table([
+              { x: 'A', y: 'B'},
+              { x: 'C', y: 'D'},
+              { x: 'E', y: 'F'}
+            ]);
+            break;
+          case 'Start Timer':
+            console.log('Starting Timer');
+            console.time('Timer');
+            break;
+          case 'End Timer':
+            console.timeEnd('Timer');
+            break;
+          case 'Console Trace':
+            function traceExample() {
+              console.trace('Trace button clicked');
+            }
+            traceExample();
+            break;
+        }
+      });
+    });
+
   </script>
 </body>
 
